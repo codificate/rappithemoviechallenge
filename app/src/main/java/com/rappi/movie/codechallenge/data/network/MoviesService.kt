@@ -1,5 +1,6 @@
 package com.rappi.movie.codechallenge.data.network
 
+import com.rappi.movie.codechallenge.data.network.response.Configuration
 import com.rappi.movie.codechallenge.data.network.response.MovieDetail
 import com.rappi.movie.codechallenge.data.network.response.ResponseMovies
 import kotlinx.coroutines.Deferred
@@ -21,4 +22,7 @@ interface MoviesService {
 
     @GET("discover/movie")
     fun movies(): Deferred<ResponseMovies>
+
+    @GET("configuration")
+    fun configuration(): Deferred<Configuration>
 }
