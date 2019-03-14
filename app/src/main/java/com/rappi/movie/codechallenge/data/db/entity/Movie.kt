@@ -12,7 +12,7 @@ import com.rappi.movie.codechallenge.common.converter.SpokenLanguageConverter
 @Entity(tableName = "movie")
 data class Movie(
     @PrimaryKey(autoGenerate = false)
-    val id: Int,
+    val id: Int? = null,
     val adult: Boolean,
     val backdrop_path: String,
     @Embedded

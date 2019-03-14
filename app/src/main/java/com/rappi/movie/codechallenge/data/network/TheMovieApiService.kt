@@ -43,5 +43,4 @@ interface TheMovieApiService: MoviesService {
                 .create(TheMovieApiService::class.java)
         }
     }
-
 }

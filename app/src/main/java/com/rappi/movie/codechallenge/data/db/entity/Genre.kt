@@ -7,5 +7,5 @@ import androidx.room.PrimaryKey
 data class Genre(
     @PrimaryKey(autoGenerate = false)
     val id: Int,
-    val name: String
+    val name: String? = null
 )

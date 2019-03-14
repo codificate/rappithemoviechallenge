@@ -1,4 +1,33 @@
 package com.rappi.movie.codechallenge.data.db
 
-class TheMovieDatabase {
+import android.content.Context
+import androidx.room.Database
+import androidx.room.Room
+import androidx.room.RoomDatabase
+import com.rappi.movie.codechallenge.data.db.entity.*
+
+@Database(entities = [Genre::class,
+    Movie::class, Popular::class, TopRated::class, Upcoming::class],
+    version = 1, exportSchema = true)
+abstract class TheMovieDatabase : RoomDatabase() {
+
+    abstract fun genreDao(): GenreDao
+    abstract fun movieDao(): MovieDao
+    abstract fun popularDao(): PopularDao
+    abstract fun topRatedDao(): TopRatedDao
+    abstract fun upcomingDao(): UpcomingDao
+
+    companion object {
+        @Volatile private var instance: TheMovieDatabase? = null
+        private val LOCK = Any()
+
+        operator fun invoke(context: Context) = instance?: synchronized(LOCK) {
+            instance ?: buildDatabase(context).also { instance = it }
+        }
+
+        private fun buildDatabase(context: Context) =
+            Room.databaseBuilder(context.applicationContext,
+                TheMovieDatabase::class.java, "carSaleEntries.db")
+                .build()
+    }
 }

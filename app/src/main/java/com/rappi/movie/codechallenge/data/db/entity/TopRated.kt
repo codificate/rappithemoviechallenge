@@ -5,11 +5,12 @@ import androidx.room.Entity
 import androidx.room.ForeignKey
 import androidx.room.PrimaryKey
 
-@Entity(tableName = "upcoming",foreignKeys = [ForeignKey(
+@Entity(tableName = "toprated",foreignKeys = [ForeignKey(
     entity = Movie::class, parentColumns = ["id"],
     childColumns = ["movie_id"], onDelete = ForeignKey.CASCADE
 )])
-data class Upcoming(
+data class TopRated(
     @PrimaryKey(autoGenerate = true)
     val id: Int? = null,
-    @ColumnInfo(name = "movie_id") var movie_id: Int)
+    @ColumnInfo(name = "movie_id") var movie_id: Int
+)
