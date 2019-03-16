@@ -1,4 +1,4 @@
-package com.rappi.movie.codechallenge.data.db
+package com.rappi.movie.codechallenge.data.db.dao
 
 import androidx.lifecycle.LiveData
 import androidx.room.Dao
@@ -14,6 +14,9 @@ interface GenreDao {
 
     @Query("select * from genre")
     fun getAll(): LiveData<List<Genre>>
+
+    @Query("select * from genre where id in (:ids)")
+    fun getByIds(ids: List<Int>): LiveData<List<Genre>>
 
     @Query("select * from genre limit 1")
     fun getFirst(): LiveData<Genre>

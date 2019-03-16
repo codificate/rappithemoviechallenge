@@ -4,6 +4,7 @@ import android.content.Context
 import androidx.room.Database
 import androidx.room.Room
 import androidx.room.RoomDatabase
+import com.rappi.movie.codechallenge.data.db.dao.*
 import com.rappi.movie.codechallenge.data.db.entity.*
 
 @Database(entities = [Genre::class,
@@ -16,6 +17,7 @@ abstract class TheMovieDatabase : RoomDatabase() {
     abstract fun popularDao(): PopularDao
     abstract fun topRatedDao(): TopRatedDao
     abstract fun upcomingDao(): UpcomingDao
+    abstract fun configurationDao(): ConfigurationDao
 
     companion object {
         @Volatile private var instance: TheMovieDatabase? = null

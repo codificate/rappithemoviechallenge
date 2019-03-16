@@ -21,9 +21,21 @@ class TheMovieDataSourceImpl(
     override val downloadedConfiguration: LiveData<Configuration>
         get() = _downloadedConfiguration
 
-    private val _downloadedMovies = MutableLiveData<ResponseMovies>()
-    override val downloadedMovies: LiveData<ResponseMovies>
-        get() = _downloadedMovies
+    private val _downloadedPopularMovies = MutableLiveData<ResponseMovies>()
+    override val downloadedPopularMovies: LiveData<ResponseMovies>
+        get() = _downloadedPopularMovies
+
+    private val _downloadedTopRatedMovies = MutableLiveData<ResponseMovies>()
+    override val downloadedTopRatedMovies: LiveData<ResponseMovies>
+        get() = _downloadedTopRatedMovies
+
+    private val _downloadedUpcomingMovies = MutableLiveData<ResponseMovies>()
+    override val downloadedUpcomingMovies: LiveData<ResponseMovies>
+        get() = _downloadedUpcomingMovies
+
+    private val _downloadedDiscoverMovies = MutableLiveData<ResponseMovies>()
+    override val downloadedDiscoverMovies: LiveData<ResponseMovies>
+        get() = _downloadedDiscoverMovies
 
     private val _fetchDetailMovie= MutableLiveData<MovieDetail>()
     private val fetchDetailMovie: LiveData<MovieDetail>
@@ -52,7 +64,7 @@ class TheMovieDataSourceImpl(
     override suspend fun fetchPopularMovies() {
         try {
             val fetchedPopularMovies = theMovieApiService.popularMovies().await()
-            _downloadedMovies.postValue(fetchedPopularMovies)
+            _downloadedPopularMovies.postValue(fetchedPopularMovies)
         }
         catch (e: NoConnectivityException) {
             Log.e("Connectivity", "No internet connection.", e)
@@ -62,7 +74,7 @@ class TheMovieDataSourceImpl(
     override suspend fun fetchUpcomingMovies() {
         try {
             val fetchedUpcomingMovies = theMovieApiService.upcomingMovies().await()
-            _downloadedMovies.postValue(fetchedUpcomingMovies)
+            _downloadedUpcomingMovies.postValue(fetchedUpcomingMovies)
         }
         catch (e: NoConnectivityException) {
             Log.e("Connectivity", "No internet connection.", e)
@@ -72,7 +84,7 @@ class TheMovieDataSourceImpl(
     override suspend fun fetchTopRatedMovies() {
         try {
             val fetchedTopRatedMovies = theMovieApiService.topRatedMovies().await()
-            _downloadedMovies.postValue(fetchedTopRatedMovies)
+            _downloadedTopRatedMovies.postValue(fetchedTopRatedMovies)
         }
         catch (e: NoConnectivityException) {
             Log.e("Connectivity", "No internet connection.", e)
@@ -82,7 +94,7 @@ class TheMovieDataSourceImpl(
     override suspend fun fetchDiscoverMovies() {
         try {
             val fetchedDiscoverMovies = theMovieApiService.movies().await()
-            _downloadedMovies.postValue(fetchedDiscoverMovies)
+            _downloadedDiscoverMovies.postValue(fetchedDiscoverMovies)
         }
         catch (e: NoConnectivityException) {
             Log.e("Connectivity", "No internet connection.", e)

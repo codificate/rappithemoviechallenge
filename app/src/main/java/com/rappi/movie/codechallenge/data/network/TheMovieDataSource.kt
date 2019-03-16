@@ -6,7 +6,10 @@ import com.rappi.movie.codechallenge.data.network.response.*
 interface TheMovieDataSource {
 
     val downloadedConfiguration: LiveData<Configuration>
-    val downloadedMovies: LiveData<ResponseMovies>
+    val downloadedPopularMovies: LiveData<ResponseMovies>
+    val downloadedTopRatedMovies: LiveData<ResponseMovies>
+    val downloadedUpcomingMovies: LiveData<ResponseMovies>
+    val downloadedDiscoverMovies: LiveData<ResponseMovies>
     val downloadedGenres: LiveData<GenreResponse>
 
     suspend fun fetchGenres()

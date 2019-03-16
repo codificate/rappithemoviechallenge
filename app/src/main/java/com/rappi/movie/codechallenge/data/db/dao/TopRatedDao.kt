@@ -1,4 +1,4 @@
-package com.rappi.movie.codechallenge.data.db
+package com.rappi.movie.codechallenge.data.db.dao
 
 import androidx.lifecycle.LiveData
 import androidx.room.Dao

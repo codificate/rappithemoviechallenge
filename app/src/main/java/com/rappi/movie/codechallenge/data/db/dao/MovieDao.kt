@@ -1,4 +1,4 @@
-package com.rappi.movie.codechallenge.data.db
+package com.rappi.movie.codechallenge.data.db.dao
 
 import androidx.lifecycle.LiveData
 import androidx.room.Dao
@@ -17,10 +17,10 @@ interface MovieDao {
     fun bulk(movieList: List<Movie>)
 
     @Query("select * from movie where id = :id")
-    fun getDetail(id: Int): LiveData<Movie>
+    fun getDetail(id: Int): Movie
 
     @Query("select * from movie where genres in (:genreList)")
-    fun getByGenre(genreList: List<Genre>)
+    fun getByGenre(genreList: List<Genre>): LiveData<List<Movie>>
 
 
 }

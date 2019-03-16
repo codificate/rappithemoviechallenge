@@ -36,7 +36,7 @@ interface MoviesService {
         @Query("sort_by") sort_by: String = "popularity.desc",
         @Query("language") language: String = "en-US"): Deferred<ResponseMovies>
 
-    @GET("configuration")
+    @GET("configurationDao")
     fun configuration(): Deferred<Configuration>
 
     @GET("genre/movie/list")
