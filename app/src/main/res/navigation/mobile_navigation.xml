@@ -8,7 +8,25 @@
     <fragment
             android:id="@+id/discoverMoviesFragment"
             android:name="com.rappi.movie.codechallenge.ui.fragment.FragmentDiscoverMovies"
-            android:label="current_weather_fragment"
+            android:label="Discover Movies"
+            tools:layout="@layout/fragment_show_list_movies" />
+
+    <fragment
+            android:id="@+id/popularMoviesFragment"
+            android:name="com.rappi.movie.codechallenge.ui.fragment.FragmentPopularMovies"
+            android:label="Popular Movies"
+            tools:layout="@layout/fragment_show_list_movies" />
+
+    <fragment
+            android:id="@+id/topRatedMoviesFragment"
+            android:name="com.rappi.movie.codechallenge.ui.fragment.FragmentTopRatedMovies"
+            android:label="Top Rated"
+            tools:layout="@layout/fragment_show_list_movies" />
+
+    <fragment
+            android:id="@+id/upComingMoviesFragment"
+            android:name="com.rappi.movie.codechallenge.ui.fragment.FragmentUpComingMovies"
+            android:label="Up coming"
             tools:layout="@layout/fragment_show_list_movies" />
 
 </navigation>

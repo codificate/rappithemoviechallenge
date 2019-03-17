@@ -7,7 +7,6 @@ import android.view.ViewGroup
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import androidx.recyclerview.widget.GridLayoutManager
-import androidx.transition.Visibility
 import com.bumptech.glide.load.engine.DiskCacheStrategy
 import com.rappi.movie.codechallenge.R
 import com.rappi.movie.codechallenge.common.glide.GlideApp
@@ -25,15 +24,15 @@ import org.kodein.di.KodeinAware
 import org.kodein.di.android.x.closestKodein
 import org.kodein.di.generic.instance
 
-class FragmentDiscoverMovies : ScopedFragment(), KodeinAware {
+class FragmentPopularMovies : ScopedFragment(), KodeinAware {
 
     override val kodein by closestKodein()
 
     private var configurationProcessFinished: Boolean = false
     private var genreProcessFinished: Boolean = false
 
-    private val discoverViewModelFactory: DiscoverViewModelFactory by instance()
-    lateinit var discoverViewModel: DiscoverViewModel
+    private val popularViewModelFactory: PopularViewModelFactory by instance()
+    lateinit var popularViewModel: PopularViewModel
 
     private val configurationViewModelFactory: ConfigurationViewModelFactory by instance()
     lateinit var configurationViewModel: ConfigurationViewModel
@@ -56,8 +55,8 @@ class FragmentDiscoverMovies : ScopedFragment(), KodeinAware {
         genreViewModel = ViewModelProviders.of(this, genreViewModelFactory)
             .get(GenreViewModel::class.java)
 
-        discoverViewModel = ViewModelProviders.of(this, discoverViewModelFactory)
-            .get(DiscoverViewModel::class.java)
+        popularViewModel = ViewModelProviders.of(this, popularViewModelFactory)
+            .get(PopularViewModel::class.java)
 
         setConfigurationData()
     }
@@ -66,14 +65,14 @@ class FragmentDiscoverMovies : ScopedFragment(), KodeinAware {
         val configuration = configurationViewModel.fecthConfiguration.await()
         val genres = genreViewModel.fecthGenres.await()
 
-        configuration.observe(this@FragmentDiscoverMovies, Observer {
+        configuration.observe(this@FragmentPopularMovies, Observer {
             if (it == null) return@Observer
             images = it.images
             configurationProcessFinished = true
             checkTheConfigurationProcessDidFinish()
         })
 
-        genres.observe(this@FragmentDiscoverMovies, Observer {
+        genres.observe(this@FragmentPopularMovies, Observer {
             if (it == null) return@Observer
             genreProcessFinished = true
             checkTheConfigurationProcessDidFinish()
@@ -90,9 +89,9 @@ class FragmentDiscoverMovies : ScopedFragment(), KodeinAware {
 
     private fun bindUi() = launch {
 
-        val discover = discoverViewModel.fetchDiscoverMovies.await()
+        val discover = popularViewModel.fetchPopularMovies.await()
 
-        discover.observe(this@FragmentDiscoverMovies, Observer { movies ->
+        discover.observe(this@FragmentPopularMovies, Observer { movies ->
             if (movies==null || movies.isEmpty()) return@Observer
             progressBar.visibility = View.GONE
             showRecomendedPosterMovie(movies[0])

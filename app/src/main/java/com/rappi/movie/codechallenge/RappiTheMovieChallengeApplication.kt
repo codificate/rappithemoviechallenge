@@ -7,7 +7,7 @@ import com.rappi.movie.codechallenge.data.network.TheMovieDataSource
 import com.rappi.movie.codechallenge.data.network.TheMovieDataSourceImpl
 import com.rappi.movie.codechallenge.data.repository.TheMovieRepository
 import com.rappi.movie.codechallenge.data.repository.TheMovieRepositoryImpl
-import com.rappi.movie.codechallenge.ui.viewmodel.*
+import com.rappi.movie.codechallenge.ui.model.*
 import com.resocoder.forecastmvvm.data.network.ConnectivityInterceptor
 import com.resocoder.forecastmvvm.data.network.ConnectivityInterceptorImpl
 import org.kodein.di.Kodein
@@ -28,6 +28,7 @@ class RappiTheMovieChallengeApplication : Application(), KodeinAware {
         bind() from singleton { instance<TheMovieDatabase>().topRatedDao() }
         bind() from singleton { instance<TheMovieDatabase>().upcomingDao() }
         bind() from singleton { instance<TheMovieDatabase>().configurationDao() }
+        bind() from singleton { instance<TheMovieDatabase>().discoverDao() }
         bind<ConnectivityInterceptor>() with singleton { ConnectivityInterceptorImpl(instance()) }
         bind() from singleton { TheMovieApiService(instance()) }
         bind<TheMovieDataSource>() with singleton { TheMovieDataSourceImpl(instance()) }

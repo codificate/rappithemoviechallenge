@@ -9,7 +9,7 @@ class SpokenLanguageConverter {
     var gson = Gson()
 
     @TypeConverter
-    fun toList(data: String?): List<SpokenLanguage> {
+    fun toList(data: String?): List<SpokenLanguage>? {
         if (data == null) {
             return kotlin.collections.emptyList()
         }
@@ -20,7 +20,7 @@ class SpokenLanguageConverter {
     }
 
     @TypeConverter
-    fun toString(someObjects: List<SpokenLanguage>): String {
+    fun toString(someObjects: List<SpokenLanguage>): String? {
         return gson.toJson(someObjects)
     }
 }

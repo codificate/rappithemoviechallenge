@@ -23,7 +23,6 @@
                     android:id="@+id/imagePromotionalMovie"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:scaleType="fitXY"
                     tools:background="@tools:sample/backgrounds/scenic[8]"/>
 
         </com.google.android.material.appbar.CollapsingToolbarLayout>
@@ -31,5 +30,12 @@
     </com.google.android.material.appbar.AppBarLayout>
 
     <include layout="@layout/content_movies_scrolling"/>
+
+    <ProgressBar
+            android:id="@+id/progressBar"
+            android:layout_marginTop="@dimen/movie_app_bar_height"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            />
 
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

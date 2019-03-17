@@ -23,6 +23,7 @@ abstract class TheMovieDatabase : RoomDatabase() {
     abstract fun popularDao(): PopularDao
     abstract fun topRatedDao(): TopRatedDao
     abstract fun upcomingDao(): UpcomingDao
+    abstract fun discoverDao(): DiscoverDao
     abstract fun configurationDao(): ConfigurationDao
 
     companion object {
@@ -35,7 +36,7 @@ abstract class TheMovieDatabase : RoomDatabase() {
 
         private fun buildDatabase(context: Context) =
             Room.databaseBuilder(context.applicationContext,
-                TheMovieDatabase::class.java, "carSaleEntries.db")
+                TheMovieDatabase::class.java, "TheMovieChallenge.db")
                 .build()
     }
 }

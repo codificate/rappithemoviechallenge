@@ -9,7 +9,7 @@ class ProductionCountryConverter {
     var gson = Gson()
 
     @TypeConverter
-    fun toList(data: String?): List<ProductionCountry> {
+    fun toList(data: String?): List<ProductionCountry>? {
         if (data == null) {
             return kotlin.collections.emptyList()
         }
@@ -20,7 +20,7 @@ class ProductionCountryConverter {
     }
 
     @TypeConverter
-    fun toString(someObjects: List<ProductionCountry>): String {
+    fun toString(someObjects: List<ProductionCountry>): String? {
         return gson.toJson(someObjects)
     }
 }

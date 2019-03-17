@@ -4,12 +4,14 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import com.rappi.movie.codechallenge.data.db.dao.*
 import com.rappi.movie.codechallenge.data.db.entity.*
+import com.rappi.movie.codechallenge.data.db.entity.Configuration
+import com.rappi.movie.codechallenge.data.db.entity.Genre
+import com.rappi.movie.codechallenge.data.db.entity.Images
+import com.rappi.movie.codechallenge.data.db.entity.Movie
 import com.rappi.movie.codechallenge.data.network.TheMovieDataSource
-import com.rappi.movie.codechallenge.data.network.response.BelongsToCollection
-import com.rappi.movie.codechallenge.data.network.response.MovieDetail
+import com.rappi.movie.codechallenge.data.network.response.*
 import com.rappi.movie.codechallenge.data.network.response.ProductionCompany
 import com.rappi.movie.codechallenge.data.network.response.ProductionCountry
-import com.rappi.movie.codechallenge.data.network.response.ResponseMovies
 import com.rappi.movie.codechallenge.data.network.response.SpokenLanguage
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
@@ -27,6 +29,9 @@ class TheMovieRepositoryImpl(
     private val theMovieDataSource: TheMovieDataSource
 ) : TheMovieRepository {
 
+    private var genres: List<Genre> = listOf()
+    private var genresByMovie: HashMap<Int, List<Genre>> = HashMap()
+
     init {
         theMovieDataSource.apply {
             downloadedConfiguration.observeForever { configurationResponse ->
@@ -38,22 +43,22 @@ class TheMovieRepositoryImpl(
             }
 
             downloadedDiscoverMovies.observeForever { discoverResponse ->
-                persistMovies(discoverResponse.toMoviesEntity())
+                matchGenresToMovies(discoverResponse)
                 persistDiscover(discoverResponse.toDiscoverEntity())
             }
 
             downloadedPopularMovies.observeForever { popularMoviesResponse ->
-                persistMovies(popularMoviesResponse.toMoviesEntity())
+                matchGenresToMovies(popularMoviesResponse)
                 persistPopular(popularMoviesResponse.toPopularEntity())
             }
 
             downloadedTopRatedMovies.observeForever { topRatedMoviesResponse ->
-                persistMovies(topRatedMoviesResponse.toMoviesEntity())
+                matchGenresToMovies(topRatedMoviesResponse)
                 persistTopRated(topRatedMoviesResponse.toTopRatedEntity())
             }
 
             downloadedUpcomingMovies.observeForever { upcomingMoviesResponse ->
-                persistMovies(upcomingMoviesResponse.toMoviesEntity())
+                matchGenresToMovies(upcomingMoviesResponse)
                 persistUpcoming(upcomingMoviesResponse.toUpcomingEntity())
             }
         }
@@ -150,6 +155,7 @@ class TheMovieRepositoryImpl(
     private fun persistGenres(genres: List<Genre>) {
         GlobalScope.launch(Dispatchers.IO) {
             genreDao.insert(genres)
+            this@TheMovieRepositoryImpl.genres = genres
         }
     }
 
@@ -219,12 +225,26 @@ class TheMovieRepositoryImpl(
         return this.movies.map { Discover(null, it.id) }
     }
 
+    private fun matchGenresToMovies(responseMovies: ResponseMovies){
+
+        responseMovies.movies.forEach( action = { movie ->
+            genresByMovie[movie.id] = movie.genre_ids.toGenresEntityList(genres)
+        })
+
+        persistMovies(responseMovies.toMoviesEntity())
+    }
+
+    private fun List<Int>.toGenresEntityList(genres: List<Genre>): List<Genre>{
+        return this.map { id -> genres.first{ genre -> genre.id == id } }
+    }
+
     private fun ResponseMovies.toMoviesEntity(): List<Movie>{
         return this.movies.map {
             Movie(id= it.id, vote_count = it.vote_count, video = it.video, vote_average = it.vote_average,
                 title = it.title, popularity = it.popularity, poster_path = it.poster_path,
-                original_language = it.original_language, original_title = it.original_title, genres = genreDao.getByIds(it.genre_ids).value,
-                backdrop_path = it.backdrop_path, adult = it.adult, overview = it.overview, release_date = it.release_date)
+                original_language = it.original_language, original_title = it.original_title,
+                genres = this@TheMovieRepositoryImpl.genresByMovie[it.id], backdrop_path = it.backdrop_path,
+                adult = it.adult, overview = it.overview, release_date = it.release_date)
         }
     }
 
@@ -243,39 +263,15 @@ class TheMovieRepositoryImpl(
 
     private fun toMovieEntity(movieDetail: MovieDetail?): Movie{
 
-        var movie: Movie? = null
-
-        /*val belongsToCollection =
-            com.rappi.movie
-                .codechallenge.data
-                .db.entity.BelongsToCollection(
-                movieDetail!!.belongs_to_collection.backdrop_path, movieDetail!!.belongs_to_collection.id,
-                movieDetail!!.belongs_to_collection.name, movieDetail!!.belongs_to_collection.poster_path)*/
+        var movie: Movie?
 
         val genres = movieDetail!!.genres.map { Genre(it.id, it.name) }
-        val productionCompanyList = 
-            movieDetail.production_companies.map {
-                com.rappi.movie.codechallenge.data.db.entity.ProductionCompany(
-                    it.id, it.logo_path, it.name, it.origin_country
-                ) }
-        val productionCountryList = 
-            movieDetail.production_countries.map {
-                com.rappi.movie.codechallenge.data.db.entity.ProductionCountry(
-                    it.iso_3166_1, it.name
-                )
-            }
-        
-        val spokenLanguageList = movieDetail.spoken_languages.map {
-            com.rappi.movie.codechallenge.data.db.entity.SpokenLanguage(
-                it.iso_639_1, it.name
-            )
-        }
 
         movie = Movie(movieDetail.id,movieDetail.adult, movieDetail.backdrop_path,
             movieDetail.budget, genres, movieDetail.homepage, movieDetail.imdb_id, movieDetail.original_language,
             movieDetail.original_title, movieDetail.overview, movieDetail.popularity, movieDetail.poster_path,
-            productionCompanyList, productionCountryList, movieDetail.release_date, movieDetail.revenue, movieDetail.runtime,
-            spokenLanguageList, movieDetail.status, movieDetail.tagline, movieDetail.original_title, movieDetail.video,
+            movieDetail.release_date, movieDetail.revenue, movieDetail.runtime,
+            movieDetail.status, movieDetail.tagline, movieDetail.original_title, movieDetail.video,
             movieDetail.vote_average, movieDetail.vote_count)
 
         return movie
@@ -285,24 +281,14 @@ class TheMovieRepositoryImpl(
 
         val mutableLiveData = MutableLiveData<MovieDetail>()
 
-        /*val belongsToCollection =
-            BelongsToCollection(movie.belongs_to_collection!!.backdrop_path, movie.belongs_to_collection.id,
-                movie.belongs_to_collection.name,movie.belongs_to_collection.poster_path) */
-
-        val productionCompanyList = movie.production_companies!!.map { ProductionCompany(it.id, it.logo_path, it.name, it.origin_country) }
-
-        val productionContryList = movie.production_countries!!.map { ProductionCountry(it.iso_3166_1, it.name) }
-
-        val spokenLanguageList = movie.spoken_languages!!.map { SpokenLanguage(it.iso_639_1, it.name) }
-
         val genresList = movie.genres!!.map { com.rappi.movie.codechallenge.data.network.response.Genre(it.id, it.name!!) }
 
         val movieDetail = MovieDetail(
             movie.adult, movie.backdrop_path,
             null, movie.budget!!, genresList,
             movie.homepage!!, movie.id!!, movie.imdb_id!!, movie.original_language, movie.original_title, movie.overview,
-            movie.popularity, movie.poster_path, productionCompanyList, productionContryList, movie.release_date,
-            movie.revenue!!, movie.runtime!!, spokenLanguageList,movie.status!!, movie.tagline!!, movie.title,
+            movie.popularity, movie.poster_path, movie.release_date,
+            movie.revenue!!, movie.runtime!!, movie.status!!, movie.tagline!!, movie.title,
             movie.video, movie.vote_average, movie.vote_count)
 
         mutableLiveData.postValue(movieDetail)
