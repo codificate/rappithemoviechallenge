@@ -18,5 +18,5 @@ interface UpcomingDao {
     fun getAll(): LiveData<List<Movie>>
 
     @Query("select * from upcoming limit 1")
-    fun getFirst(): LiveData<Movie>
+    fun getFirst(): LiveData<Upcoming>
 }

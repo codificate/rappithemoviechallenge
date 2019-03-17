@@ -18,5 +18,5 @@ interface PopularDao {
     fun getAll(): LiveData<List<Movie>>
 
     @Query("select * from popular limit 1")
-    fun getFirst(): LiveData<Movie>
+    fun getFirst(): LiveData<Popular>
 }

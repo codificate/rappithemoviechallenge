@@ -17,5 +17,5 @@ interface DiscoverDao {
     fun getAll(): LiveData<List<Movie>>
 
     @Query("select * from discover limit 1")
-    fun getFirst(): LiveData<Movie>
+    fun getFirst(): LiveData<Discover>
 }

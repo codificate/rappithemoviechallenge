@@ -4,12 +4,18 @@ import android.content.Context
 import androidx.room.Database
 import androidx.room.Room
 import androidx.room.RoomDatabase
+import androidx.room.TypeConverters
+import com.rappi.movie.codechallenge.common.converter.*
 import com.rappi.movie.codechallenge.data.db.dao.*
 import com.rappi.movie.codechallenge.data.db.entity.*
 
-@Database(entities = [Genre::class,
+@Database(entities = [Genre::class, Configuration::class, Discover::class,
     Movie::class, Popular::class, TopRated::class, Upcoming::class],
-    version = 1, exportSchema = true)
+    version = 1, exportSchema = false)
+@TypeConverters(
+    GenreConverter::class, ListStringConverter::class,
+    MovieConverter::class, ProductionCompanyConverter::class,
+    ProductionCountryConverter::class, SpokenLanguageConverter::class)
 abstract class TheMovieDatabase : RoomDatabase() {
 
     abstract fun genreDao(): GenreDao

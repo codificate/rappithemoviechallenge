@@ -1,6 +1,5 @@
 package com.rappi.movie.codechallenge.data.db.entity
 
-import androidx.room.Embedded
 import androidx.room.Entity
 import androidx.room.PrimaryKey
 import androidx.room.TypeConverters
@@ -15,8 +14,6 @@ data class Movie(
     val id: Int? = null,
     val adult: Boolean,
     val backdrop_path: String,
-    @Embedded
-    val belongs_to_collection: BelongsToCollection? = null,
     val budget: Int? = null,
     @TypeConverters(GenreConverter::class)
     val genres: List<Genre>? = null,

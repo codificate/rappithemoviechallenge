@@ -18,5 +18,5 @@ interface TopRatedDao {
     fun getAll(): LiveData<List<Movie>>
 
     @Query("select * from toprated limit 1")
-    fun getFirst(): LiveData<Movie>
+    fun getFirst(): LiveData<TopRated>
 }

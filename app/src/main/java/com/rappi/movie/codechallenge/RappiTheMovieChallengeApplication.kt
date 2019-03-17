@@ -7,6 +7,7 @@ import com.rappi.movie.codechallenge.data.network.TheMovieDataSource
 import com.rappi.movie.codechallenge.data.network.TheMovieDataSourceImpl
 import com.rappi.movie.codechallenge.data.repository.TheMovieRepository
 import com.rappi.movie.codechallenge.data.repository.TheMovieRepositoryImpl
+import com.rappi.movie.codechallenge.ui.viewmodel.*
 import com.resocoder.forecastmvvm.data.network.ConnectivityInterceptor
 import com.resocoder.forecastmvvm.data.network.ConnectivityInterceptorImpl
 import org.kodein.di.Kodein
@@ -14,6 +15,7 @@ import org.kodein.di.KodeinAware
 import org.kodein.di.android.androidModule
 import org.kodein.di.generic.bind
 import org.kodein.di.generic.instance
+import org.kodein.di.generic.provider
 import org.kodein.di.generic.singleton
 
 class RappiTheMovieChallengeApplication : Application(), KodeinAware {
@@ -30,6 +32,12 @@ class RappiTheMovieChallengeApplication : Application(), KodeinAware {
         bind() from singleton { TheMovieApiService(instance()) }
         bind<TheMovieDataSource>() with singleton { TheMovieDataSourceImpl(instance()) }
         bind<TheMovieRepository>() with singleton {TheMovieRepositoryImpl(instance(), instance(), instance(),instance(), instance(), instance(), instance(), instance()) }
+        bind() from provider { ConfigurationViewModelFactory(instance()) }
+        bind() from provider { GenreViewModelFactory(instance()) }
+        bind() from provider { DiscoverViewModelFactory(instance()) }
+        bind() from provider { PopularViewModelFactory(instance()) }
+        bind() from provider { TopRatedViewModeFactory(instance()) }
+        bind() from provider { UpComingViewModelFactory(instance()) }
     }
 
     override fun onCreate() {

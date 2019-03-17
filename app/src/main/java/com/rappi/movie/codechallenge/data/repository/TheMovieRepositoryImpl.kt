@@ -229,7 +229,7 @@ class TheMovieRepositoryImpl(
     }
 
     private fun com.rappi.movie.codechallenge.data.network.response.Configuration.toEntity(): Configuration {
-        return Configuration(
+        return Configuration(null,
             this.change_keys,
             Images(
                 this.images.backdrop_sizes,
@@ -245,38 +245,38 @@ class TheMovieRepositoryImpl(
 
         var movie: Movie? = null
 
-        val belongsToCollection =
+        /*val belongsToCollection =
             com.rappi.movie
                 .codechallenge.data
                 .db.entity.BelongsToCollection(
                 movieDetail!!.belongs_to_collection.backdrop_path, movieDetail!!.belongs_to_collection.id,
-                movieDetail!!.belongs_to_collection.name, movieDetail!!.belongs_to_collection.poster_path)
+                movieDetail!!.belongs_to_collection.name, movieDetail!!.belongs_to_collection.poster_path)*/
 
         val genres = movieDetail!!.genres.map { Genre(it.id, it.name) }
         val productionCompanyList = 
-            movieDetail!!.production_companies.map { 
+            movieDetail.production_companies.map {
                 com.rappi.movie.codechallenge.data.db.entity.ProductionCompany(
                     it.id, it.logo_path, it.name, it.origin_country
                 ) }
         val productionCountryList = 
-            movieDetail!!.production_countries.map { 
+            movieDetail.production_countries.map {
                 com.rappi.movie.codechallenge.data.db.entity.ProductionCountry(
                     it.iso_3166_1, it.name
                 )
             }
         
-        val spokenLanguageList = movieDetail!!.spoken_languages.map { 
+        val spokenLanguageList = movieDetail.spoken_languages.map {
             com.rappi.movie.codechallenge.data.db.entity.SpokenLanguage(
                 it.iso_639_1, it.name
             )
         }
 
-        movie = Movie(movieDetail!!.id,movieDetail!!.adult, movieDetail!!.backdrop_path, belongsToCollection,
-            movieDetail!!.budget, genres, movieDetail!!.homepage, movieDetail!!.imdb_id, movieDetail!!.original_language,
-            movieDetail!!.original_title, movieDetail!!.overview, movieDetail!!.popularity, movieDetail!!.poster_path,
-            productionCompanyList, productionCountryList, movieDetail!!.release_date, movieDetail!!.revenue, movieDetail!!.runtime,
-            spokenLanguageList, movieDetail!!.status, movieDetail!!.tagline, movieDetail!!.original_title, movieDetail!!.video,
-            movieDetail!!.vote_average, movieDetail!!.vote_count)
+        movie = Movie(movieDetail.id,movieDetail.adult, movieDetail.backdrop_path,
+            movieDetail.budget, genres, movieDetail.homepage, movieDetail.imdb_id, movieDetail.original_language,
+            movieDetail.original_title, movieDetail.overview, movieDetail.popularity, movieDetail.poster_path,
+            productionCompanyList, productionCountryList, movieDetail.release_date, movieDetail.revenue, movieDetail.runtime,
+            spokenLanguageList, movieDetail.status, movieDetail.tagline, movieDetail.original_title, movieDetail.video,
+            movieDetail.vote_average, movieDetail.vote_count)
 
         return movie
     }
@@ -285,9 +285,9 @@ class TheMovieRepositoryImpl(
 
         val mutableLiveData = MutableLiveData<MovieDetail>()
 
-        val belongsToCollection =
+        /*val belongsToCollection =
             BelongsToCollection(movie.belongs_to_collection!!.backdrop_path, movie.belongs_to_collection.id,
-                movie.belongs_to_collection.name,movie.belongs_to_collection.poster_path)
+                movie.belongs_to_collection.name,movie.belongs_to_collection.poster_path) */
 
         val productionCompanyList = movie.production_companies!!.map { ProductionCompany(it.id, it.logo_path, it.name, it.origin_country) }
 
@@ -299,7 +299,7 @@ class TheMovieRepositoryImpl(
 
         val movieDetail = MovieDetail(
             movie.adult, movie.backdrop_path,
-            belongsToCollection, movie.budget!!, genresList,
+            null, movie.budget!!, genresList,
             movie.homepage!!, movie.id!!, movie.imdb_id!!, movie.original_language, movie.original_title, movie.overview,
             movie.popularity, movie.poster_path, productionCompanyList, productionContryList, movie.release_date,
             movie.revenue!!, movie.runtime!!, spokenLanguageList,movie.status!!, movie.tagline!!, movie.title,

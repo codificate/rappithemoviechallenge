@@ -3,7 +3,7 @@ package com.rappi.movie.codechallenge.data.network.response
 data class MovieDetail(
     val adult: Boolean,
     val backdrop_path: String,
-    val belongs_to_collection: BelongsToCollection,
+    val belongs_to_collection: BelongsToCollection? = null,
     val budget: Int,
     val genres: List<Genre>,
     val homepage: String,

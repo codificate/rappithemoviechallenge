@@ -1,4 +1,4 @@
-package com.rappi.movie.codechallenge.ui
+package com.rappi.movie.codechallenge.ui.viewmodel
 
 import androidx.lifecycle.ViewModel
 import com.rappi.movie.codechallenge.common.lazyDeferred
