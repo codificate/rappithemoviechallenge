@@ -7,7 +7,6 @@ import android.view.ViewGroup
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import androidx.recyclerview.widget.GridLayoutManager
-import androidx.transition.Visibility
 import com.bumptech.glide.load.engine.DiskCacheStrategy
 import com.rappi.movie.codechallenge.R
 import com.rappi.movie.codechallenge.common.glide.GlideApp
@@ -16,7 +15,7 @@ import com.rappi.movie.codechallenge.data.db.entity.Movie
 import com.rappi.movie.codechallenge.ui.adapter.MoviesAdapter
 import com.rappi.movie.codechallenge.ui.base.ScopedFragment
 import com.rappi.movie.codechallenge.ui.helper.GridItemDecoration
-import com.rappi.movie.codechallenge.ui.helper.MoviePosterPath
+import com.rappi.movie.codechallenge.ui.helper.MoviePicturePath
 import com.rappi.movie.codechallenge.ui.model.*
 import kotlinx.android.synthetic.main.content_movies_scrolling.*
 import kotlinx.android.synthetic.main.fragment_show_list_movies.*
@@ -101,8 +100,10 @@ class FragmentDiscoverMovies : ScopedFragment(), KodeinAware {
     }
 
     private fun showMovies(movies: List<Movie>){
-        recyclerViewMovies.layoutManager = GridLayoutManager(activity, 2)
-        recyclerViewMovies.addItemDecoration(GridItemDecoration(10, 2))
+        if (recyclerViewMovies.layoutManager==null){
+            recyclerViewMovies.layoutManager = GridLayoutManager(activity, 2)
+            recyclerViewMovies.addItemDecoration(GridItemDecoration(10, 2))
+        }
         val moviesAdapter = MoviesAdapter(images)
         moviesAdapter.setMovies(movies)
         recyclerViewMovies.adapter = moviesAdapter
@@ -110,7 +111,7 @@ class FragmentDiscoverMovies : ScopedFragment(), KodeinAware {
 
     private fun showRecomendedPosterMovie(movie: Movie){
         GlideApp.with(this)
-            .load(MoviePosterPath.build(movie, images))
+            .load(MoviePicturePath.build(movie, images))
             .centerCrop()
             .diskCacheStrategy(DiskCacheStrategy.DATA)
             .into(imagePromotionalMovie)

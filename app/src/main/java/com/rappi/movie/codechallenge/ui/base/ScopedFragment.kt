@@ -2,6 +2,9 @@ package com.rappi.movie.codechallenge.ui.base
 
 import android.os.Bundle
 import androidx.fragment.app.Fragment
+import androidx.recyclerview.widget.GridLayoutManager
+import com.rappi.movie.codechallenge.ui.helper.GridItemDecoration
+import kotlinx.android.synthetic.main.content_movies_scrolling.*
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job

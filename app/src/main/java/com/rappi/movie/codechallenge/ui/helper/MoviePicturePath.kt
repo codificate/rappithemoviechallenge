@@ -5,7 +5,7 @@ import com.rappi.movie.codechallenge.data.db.entity.Images
 import com.rappi.movie.codechallenge.data.db.entity.Movie
 import java.lang.StringBuilder
 
-object MoviePosterPath {
+object MoviePicturePath {
 
     private fun getPosterSize(images: Images): String{
         return if (images.poster_sizes.size > 4) images.poster_sizes[4] else "W500"
@@ -16,7 +16,7 @@ object MoviePosterPath {
     }
 
     fun build(movie: Movie, images: Images): String {
-        var url: StringBuilder = StringBuilder("")
+        var url = StringBuilder("")
 
         if (!TextUtils.isEmpty(images.base_url)){
             url.append(images.base_url)

@@ -16,12 +16,12 @@
         <item name="android:textColorSecondary">#EEEEEE</item>
     </style>
 
-    <style name="AppTheme.NoActionBar">
+    <!--style name="AppTheme.NoActionBar">
         <item name="windowNoTitle">true</item>
         <item name="windowActionBar">false</item>
         <item name="android:windowFullscreen">true</item>
         <item name="android:windowContentOverlay">@null</item>
-    </style>
+    </style-->
 
     <style name="AppTheme.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar"/>
 
